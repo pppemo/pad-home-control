@@ -1,3 +1,3 @@
 export interface Dictionary {
-  [id: string]: string;
+  [id: string]: string | number;
 }

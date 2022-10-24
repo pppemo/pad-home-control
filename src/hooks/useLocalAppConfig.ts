@@ -1,11 +1,14 @@
 import store from 'store2';
 import type { System } from '../objects/system';
 import type { Pad } from '../objects/pad';
-import { Recognizable } from '../objects/recognizable';
+import type { AppSettings } from '../objects/app';
+
+const phcStore = store.namespace('phc.config');
 
 enum ConfigKeys {
   SYSTEMS = 'systems',
   PADS = 'pads',
+  APP = 'app',
 }
 
 abstract class LocalAppConfigSlice<R> {
@@ -16,16 +19,16 @@ abstract class LocalAppConfigSlice<R> {
   }
 
   public get(): R {
-    return store.get(this.configKey);
+    return phcStore.get(this.configKey);
   }
 
   public set(config: R) {
-    return store.set(this.configKey, config);
+    return phcStore.set(this.configKey, config);
   }
 }
 
 class LocalAppConfigSliceMap<R> extends LocalAppConfigSlice<R> {
-  public setProperty(key: keyof R, value: string) {
+  public setProperty(key: keyof R, value: string | number) {
     const currentConfig = this.get();
     const newConfig = {
       ...currentConfig,
@@ -44,7 +47,8 @@ class LocalAppConfigSliceArray<R> extends LocalAppConfigSlice<Array<R>> {
 }
 
 export const useLocalAppConfig = () => {
+  const app = new LocalAppConfigSliceMap<AppSettings>(ConfigKeys.APP);
   const systems = new LocalAppConfigSliceArray<System>(ConfigKeys.SYSTEMS);
   const pads = new LocalAppConfigSliceArray<Pad>(ConfigKeys.PADS);
-  return { systems, pads };
+  return { systems, pads, app };
 };
