@@ -1,3 +1,3 @@
-export type Dictionary<V> = {
-  [id: string]: V;
-};
+export interface Dictionary {
+  [id: string]: string;
+}

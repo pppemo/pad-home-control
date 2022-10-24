@@ -1,8 +1,9 @@
 import { Widget } from './widget';
 import { Dictionary } from './dictionary';
+import { Recognizable } from './recognizable';
 
-export type Pad = {
-  id: string;
+export interface Pad extends Recognizable {
+  order: number;
   widgets: Widget[];
-  properties: Dictionary<string>;
-};
+  properties: Dictionary;
+}
