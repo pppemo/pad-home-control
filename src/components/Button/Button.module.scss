@@ -1,0 +1,6 @@
+.root {
+  &:global(.MuiButton-root) {
+    padding: 20px 40px;
+    font-size: 24px;
+  }
+}
