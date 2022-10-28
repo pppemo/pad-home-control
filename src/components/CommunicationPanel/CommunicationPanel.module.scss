@@ -1,0 +1,46 @@
+.root {
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  position: relative;
+  overflow: auto;
+
+  .title {
+    font-family: 'Ubuntu Condensed', sans-serif;
+    font-size: 4rem;
+    position: absolute;
+    top: 0;
+    left: 16rem;
+    right: 16rem;
+    padding-top: 8rem;
+    padding-bottom: 2rem;
+  }
+
+  .buttons {
+    width: 12rem;
+    padding: 2rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    & > button {
+      margin-top: 2rem;
+    }
+  }
+
+  .scrollable {
+    overflow-y: scroll;
+    max-height: calc(100% - 15rem);
+    margin-top: 15rem;
+    width: 100%;
+
+    .content {
+      font-size: 1.5rem;
+      margin: 0 16rem 8rem 16rem;
+    }
+  }
+}

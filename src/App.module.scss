@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu+Condensed&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap');
+
+:global {
+  body {
+    font-family: 'Source Sans Pro', sans-serif;
+    color: white;
+    font-size: 1.25rem;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}

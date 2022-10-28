@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import {
   Button as ButtonMUI,
   ButtonProps as ButtonMUIProps,
@@ -9,13 +9,13 @@ interface ButtonProps extends Omit<ButtonMUIProps, 'classes' | 'className'> {
   children: string;
 }
 
-export const Button = ({
+export const Button: FunctionComponent<ButtonProps> = ({
   children,
   variant = 'contained',
   disableElevation = true,
   size = 'large',
   ...props
-}: ButtonProps) => {
+}) => {
   return (
     <ButtonMUI
       className={styles.root}
