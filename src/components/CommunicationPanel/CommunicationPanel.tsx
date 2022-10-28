@@ -11,6 +11,8 @@ interface CommunicationPanelProps {
   onConstructiveClick?: () => void;
   onDestructiveClick?: () => void;
   onNeutralClick?: () => void;
+  buttonsLeft?: ReactNode;
+  buttonsRight?: ReactNode;
 }
 
 export const CommunicationPanel: FunctionComponent<CommunicationPanelProps> = ({
@@ -22,34 +24,40 @@ export const CommunicationPanel: FunctionComponent<CommunicationPanelProps> = ({
   onConstructiveClick,
   onDestructiveClick,
   onNeutralClick,
+  buttonsLeft,
+  buttonsRight,
 }) => {
   return (
     <div className={styles.root}>
       <div className={styles.title}>{title}</div>
       <div className={styles.scrollable}>
+        {buttonsLeft && <div className={styles.buttonsLeft}>{buttonsLeft}</div>}
         {children && <div className={styles.content}>{children}</div>}
-        <div className={styles.buttons}>
-          {destructiveLabel && onDestructiveClick && (
-            <>
-              <Button color="error" fullWidth onClick={onDestructiveClick}>
-                {destructiveLabel}
-              </Button>
-            </>
-          )}
-          {neutralLabel && onNeutralClick && (
-            <>
-              <Button color="primary" fullWidth onClick={onNeutralClick}>
-                {neutralLabel}
-              </Button>
-            </>
-          )}
-          {constructiveLabel && onConstructiveClick && (
-            <>
-              <Button color="success" fullWidth onClick={onConstructiveClick}>
-                {constructiveLabel}
-              </Button>
-            </>
-          )}
+        <div className={styles.buttonsRight}>
+          <>
+            {buttonsRight}
+            {destructiveLabel && onDestructiveClick && (
+              <>
+                <Button color="error" fullWidth onClick={onDestructiveClick}>
+                  {destructiveLabel}
+                </Button>
+              </>
+            )}
+            {neutralLabel && onNeutralClick && (
+              <>
+                <Button color="primary" fullWidth onClick={onNeutralClick}>
+                  {neutralLabel}
+                </Button>
+              </>
+            )}
+            {constructiveLabel && onConstructiveClick && (
+              <>
+                <Button color="success" fullWidth onClick={onConstructiveClick}>
+                  {constructiveLabel}
+                </Button>
+              </>
+            )}
+          </>
         </div>
       </div>
     </div>
