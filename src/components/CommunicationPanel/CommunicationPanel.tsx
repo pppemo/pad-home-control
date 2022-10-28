@@ -4,18 +4,18 @@ import styles from './CommunicationPanel.module.scss';
 
 interface CommunicationPanelProps {
   title: string;
-  content?: ReactNode;
+  children?: ReactNode;
   constructiveLabel?: string;
   destructiveLabel?: string;
   neutralLabel?: string;
-  onConstructiveClick: () => {};
-  onDestructiveClick: () => {};
-  onNeutralClick: () => {};
+  onConstructiveClick?: () => void;
+  onDestructiveClick?: () => void;
+  onNeutralClick?: () => void;
 }
 
 export const CommunicationPanel: FunctionComponent<CommunicationPanelProps> = ({
   title,
-  content,
+  children,
   constructiveLabel,
   destructiveLabel,
   neutralLabel,
@@ -27,7 +27,7 @@ export const CommunicationPanel: FunctionComponent<CommunicationPanelProps> = ({
     <div className={styles.root}>
       <div className={styles.title}>{title}</div>
       <div className={styles.scrollable}>
-        {content && <div className={styles.content}>{content}</div>}
+        {children && <div className={styles.content}>{children}</div>}
         <div className={styles.buttons}>
           {destructiveLabel && onDestructiveClick && (
             <>

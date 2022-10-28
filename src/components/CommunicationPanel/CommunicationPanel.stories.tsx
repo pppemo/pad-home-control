@@ -14,5 +14,5 @@ const Template: ComponentStory<typeof CommunicationPanel> = args => (
 export const Playground = Template.bind({});
 Playground.args = {
   title: 'Communication Panel',
-  content: 'Hey! This is the actual message of the container!',
+  children: 'Hey! This is the actual message of the container!',
 };
