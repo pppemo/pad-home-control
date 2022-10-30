@@ -1,7 +1,7 @@
 import store from 'store2';
-import type { System } from '../objects/system';
-import type { Pad } from '../objects/pad';
-import type { AppSettings } from '../objects/app';
+import type { System } from '../interfaces/system';
+import type { Pad } from '../interfaces/pad';
+import type { AppSettings } from '../interfaces/app';
 
 const phcStore = store.namespace('phc.config');
 
@@ -46,9 +46,14 @@ class LocalAppConfigSliceArray<R> extends LocalAppConfigSlice<Array<R>> {
   }
 }
 
-export const useLocalAppConfig = () => {
-  const app = new LocalAppConfigSliceMap<AppSettings>(ConfigKeys.APP);
-  const systems = new LocalAppConfigSliceArray<System>(ConfigKeys.SYSTEMS);
-  const pads = new LocalAppConfigSliceArray<Pad>(ConfigKeys.PADS);
-  return { systems, pads, app };
-};
+const app = new LocalAppConfigSliceMap<AppSettings>(ConfigKeys.APP);
+const systems = new LocalAppConfigSliceArray<System>(ConfigKeys.SYSTEMS);
+const pads = new LocalAppConfigSliceArray<Pad>(ConfigKeys.PADS);
+
+export const getLocalAppConfig = () => ({
+  app: app.get(),
+  systems: systems.get(),
+  pads: pads.get(),
+});
+
+export const useLocalAppConfig = { systems, pads, app };
