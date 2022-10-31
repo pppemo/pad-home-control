@@ -1,0 +1,58 @@
+.root {
+  z-index: 1;
+  font-family: 'Ubuntu Condensed';
+  font-size: 3.5rem;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 0.5rem solid #ffde00;
+  border-radius: 5%;
+  box-sizing: border-box;
+  display: flex;
+  overflow: hidden;
+  transition-property: color;
+  transition-duration: 0.25s;
+  transition-timing-function: ease-in;
+
+  &.on {
+    color: gray;
+    transition-property: color;
+    transition-duration: 0.5s;
+    transition-delay: 0.25s;
+    transition-timing-function: ease-out;
+  }
+
+  .textfit {
+    z-index: inherit;
+    display: flex;
+    max-width: calc(100% - 2rem);
+    margin: 0.5rem 1rem;
+    margin-top: 50%;
+
+    & > div {
+      align-self: flex-end;
+    }
+  }
+
+  .background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(55deg, #ffde00, 30%, #ffff00);
+    transform: translate3d(-300px, 300px, 0);
+    opacity: 0;
+    transition-property: transform, opacity;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-in;
+
+    &.visible {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+      transition-property: transform, opacity;
+      transition-duration: 0.25s;
+      transition-timing-function: ease-out;
+    }
+  }
+}
