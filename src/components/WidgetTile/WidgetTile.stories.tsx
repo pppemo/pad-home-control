@@ -1,17 +1,12 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { WidgetTile } from './WidgetTile';
+import { tileCanvasDecorator } from './../../../.storybook/decorators';
 
 export default {
   title: 'Widget Tile',
   component: WidgetTile,
-  decorators: [
-    Story => (
-      <div style={{ width: '30vh', height: '30vh' }}>
-        <Story />
-      </div>
-    ),
-  ],
+  decorators: [tileCanvasDecorator],
 } as ComponentMeta<typeof WidgetTile>;
 
 const Template: ComponentStory<typeof WidgetTile> = args => (
