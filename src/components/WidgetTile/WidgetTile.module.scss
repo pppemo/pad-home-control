@@ -1,0 +1,76 @@
+.root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 5%;
+  overflow: hidden;
+  backdrop-filter: blur(0px);
+
+  .configOverlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    backdrop-filter: blur(5px) brightness(90%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2rem;
+
+    .moveContainer {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+
+      & > svg {
+        transform: rotate(45deg);
+      }
+    }
+
+    .iconsContainer {
+      margin-top: 2rem;
+      width: 90%;
+      display: flex;
+      justify-content: space-evenly;
+
+      button {
+        padding: 10px 0;
+      }
+    }
+  }
+
+  @keyframes wobble {
+    0% {
+    }
+    17% {
+      transform: rotate(-0.5deg);
+    }
+    34% {
+      transform: rotate(0.5deg);
+    }
+    51% {
+      transform: rotate(-1deg);
+    }
+    68% {
+      transform: rotate(1deg);
+    }
+    85% {
+      transform: rotate(-0.5deg);
+    }
+    100% {
+      transform: rotate(1deg);
+    }
+  }
+
+  &.wobble {
+    animation-name: wobble;
+    animation-iteration-count: infinite;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-delay: 0s;
+  }
+}

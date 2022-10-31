@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, ReactNode } from 'react';
 import {
   Button as ButtonMUI,
   ButtonProps as ButtonMUIProps,
@@ -6,7 +6,7 @@ import {
 import styles from './Button.module.scss';
 
 interface ButtonProps extends Omit<ButtonMUIProps, 'classes' | 'className'> {
-  children: string;
+  children: ReactNode;
 }
 
 export const Button: FunctionComponent<ButtonProps> = ({
