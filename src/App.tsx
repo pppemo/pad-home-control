@@ -31,17 +31,46 @@ function App() {
         onNeutralClick={() => {}}
         buttonsLeft={LeftButtons}
       >
-        <div style={{ width: 250, height: 250 }}>
+        <div style={{ width: 250, height: 250, padding: 30 }}>
           <LightSwitch label="Salon" />
         </div>
-        <div style={{ width: 250, height: 250 }}>
-          <WidgetTile
-            isConfigOpen
-            onDeleteClick={() => {}}
-            onSettingsClick={() => {}}
-          >
-            <LightSwitch isOn label="Salon" />
-          </WidgetTile>
+        <div
+          style={{
+            width: '100%',
+            height: 250,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+          }}
+        >
+          <div style={{ width: 250, height: 250, padding: 30 }}>
+            <WidgetTile
+              isConfigOpen
+              onDeleteClick={() => {}}
+              onSettingsClick={() => {}}
+            >
+              <LightSwitch isOn label="Salon" />
+            </WidgetTile>
+          </div>
+
+          <div style={{ width: 250, height: 250, padding: 30 }}>
+            <WidgetTile
+              isConfigOpen
+              onDeleteClick={() => {}}
+              onSettingsClick={() => {}}
+            >
+              <LightSwitch isOn label="Salon" />
+            </WidgetTile>
+          </div>
+          <div style={{ width: 250, height: 250, padding: 30 }}>
+            <WidgetTile
+              isConfigOpen
+              onDeleteClick={() => {}}
+              onSettingsClick={() => {}}
+            >
+              <LightSwitch isOn label="Salon" />
+            </WidgetTile>
+          </div>
         </div>
       </CommunicationPanel>
     </>
