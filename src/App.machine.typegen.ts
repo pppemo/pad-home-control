@@ -23,23 +23,25 @@ export interface Typegen0 {
     | 'adding_new_system'
     | 'init'
     | 'main'
+    | 'main.canvas'
+    | 'main.canvas.editing_widgets'
+    | 'main.canvas.settings'
+    | 'main.canvas.widgets'
     | 'main.menu'
     | 'main.menu.closed'
     | 'main.menu.opened'
-    | 'main.screen_blind'
-    | 'main.screen_blind.disabled'
-    | 'main.screen_blind.enabled'
-    | 'main.view'
-    | 'main.view.widgets'
+    | 'main.screen_blinds'
+    | 'main.screen_blinds.disabled'
+    | 'main.screen_blinds.enabled'
     | {
         main?:
+          | 'canvas'
           | 'menu'
-          | 'screen_blind'
-          | 'view'
+          | 'screen_blinds'
           | {
+              canvas?: 'editing_widgets' | 'settings' | 'widgets';
               menu?: 'closed' | 'opened';
-              screen_blind?: 'disabled' | 'enabled';
-              view?: 'widgets';
+              screen_blinds?: 'disabled' | 'enabled';
             };
       };
   tags: never;

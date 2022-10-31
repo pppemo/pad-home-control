@@ -1,22 +1,36 @@
-import { createMachine, send } from 'xstate';
-import { getLocalAppConfig } from './store/localAppConfig';
+import { createMachine, send, assign } from 'xstate';
+import { AppConfig } from './interfaces/appConfig';
+import { getLocalAppConfig } from './store/localAppConfig2';
 
 type Event =
   | { type: 'START_APP' }
   | { type: 'OPEN_MENU' }
   | { type: 'CLOSE_MENU' }
   | { type: 'ADD_NEW_SYSTEM' }
-  | { type: 'ENABLE_SCREEN_BLIND' }
-  | { type: 'DISABLE_SCREEN_BLIND' }
+  | { type: 'ENABLE_SCREEN_BLINDS' }
+  | { type: 'DISABLE_SCREEN_BLINDS' }
+  | { type: 'OPEN_SETTINGS' }
+  | { type: 'CLOSE_SETTINGS' }
+  | { type: 'EDIT_WIDGETS' }
+  | { type: 'FINISH_EDITING_WIDGETS' }
+  | { type: 'FLIP_PAGE'; page: number }
   | { type: 'EXIT_ADDING_NEW_SYSTEM'; success: boolean };
 
+const appConfig = getLocalAppConfig();
+
 export const appMachine =
-  /** @xstate-layout N4IgpgJg5mDOIC5QEMAOqB0BLAdlgLgMQDaADALqKioD2sBWNOVIAHogIykCsGALDwDsAJgAcANgCcpSSIDMAGhABPRJPH8R48cI5jScuZO4BfE0rSZcBEh0pIQtevkbMH7BFw08DhwdME+PnFBJVVPblIMYTlBDkFRYUD-PzMLdAwAW2RcLLAcAFcMAGMAGzpIQgB5AAUAUQA5AH0AWUaAVTJ7ajoGJhYPbnFeAUjhYNI9STkOMMRhGQxJLzkZHWmdPjSQSyycnDzCjBpUfMqAYQAZKoBlOtaOrpYnPrdQQfEODHE+bmFuOR8dTcZbiOYIQx8DB-EGiCTiCQSUzmHYZbK5WDFABOYHyTQARqVcBAMBAsLBkITKo0AIIAIUu9xu5wASnVGk0GQBJBoAESeDheLn67kQ3G4ULWIWM2mmMXB4tEGDkf102g4okkcMk2126IOmJxeMJxIw+UppUqvK5N3pjKazLZHO5fIFPWcrgGYr+-GCgMEQzk-2G4IRSp+kzkoiBcVIQV1aP2hBpvN5TQadQA6g6AJo3AAqdRabscvWFbzYnA4XziglI4zriNIolCKkQvyiqykKu40b4Gq2KN2yAgZJwUCaODAAHcmrBlLB8GBMoQ6gANLn5pop60NADi6azuYLRZLQs9ooQAFphNIMJqYsNJFqpPK2whbxoEuJSIENZrRB7MwURwGgIDgFhdmsfBnjLC93kQK8ZgwDhuHiSZJGEYQfyMHhwXUTRsJ0PRRF8YwE0wfUMAANywGcMGnLBoDAfB4EFOCRQQzwOGCJZjGfH5VjkBFuHBIjlQDUjg3FaRfgovZclomdYI9TjK08GQlWfEF1D4ISRPBeJBGVZ8Yl-fs9KGQd0ko-ZDiKMoKggFTXi9BBfkkDB-FEDhAThBYf1bcJsN4athL4fxe17Qw5HkqjMnyIoTjOZz2NUisPBCKEBA4YZESMYxRDE4YUN8n5ItEaL4yHRNcgSwoXPLNz+xrLVfL4fzSECwyFiWQEeGWKMEh4jg4rsw1cRwAkiRwEkyQpKlUvdVzL1+JUWx4T5uDrUgeHGUMsK86tdCCYITtimrbIxbFJum01zUWxr4PUwQVSWZtBASARfh0g7hCOvQeKCYjqpshSDRu40ZqW0t0uarh7zrIZUJ2va+HBYJPNicVXqMFVPjG3AnrUjxhP+jbke23a0fBZDjADIZfx45sZGEeSRzHCcp1nedF2XYmMsQUgxLhQjtF0fRDB1S6BbcpCo3vTDhJ0iQlfBK9towDDJm2v5AhCf5gJMIA */
+  /** @xstate-layout N4IgpgJg5mDOIC5QEMAOqB0BLAdlgLgMQDaADALqKioD2sBWNOVIAHogIykCsGALDwDsAJgAcANgCcpSSIDMAGhABPRJPH8R48cI5jScuZO4BfE0rSZcBEh0pIQtevkbMH7BFw08DhwdME+PnFBJVVPblIMYTlBDkFRYUD-PzMLdAwAW2RcDABjZBwAN2RYDAB3LGgwfFhCAHkABQBRADkAfQBlZoAVHoBJVoBxTrJ7ajoGJhYPDj1RDFEjQX8QvljtMM5uYX4+QUjhIJW+bnE0kEssnJx8wpKyyurawgAxABl+xvbGgEEh5pjFhOKZuUAeSQcXhzUQccSiSRBOQCUIqRBibx8YTqbjGHanUSmcyXDLZXIFYqlCpVGAvZoAEX6PXaAHV+vSAT1RhRgZMXNN3JxhNw+ItEXxIRwgqJSHMtp5SBpdKcdnJFbDRKJBBcrmTbhSHhhYDUXDgoHUAMLverdLq9AbDbnjRx81wzTh6XikGWkRUcUQCKXieVJbxGeLwjhybhGEU60k3O6UsqQBhm9pPWl1V6DfqdAAS7QZTMGQ1Z7M5Tt5zjdgs8SVFMjkIUVMh4knlcniGDivt03C1RjkSXjmD1WTAOAArvkADZ0SANFodACybQAqkCHCD+WC2IgzgtCYT9gHxHMOPKobt1kczqdvXCVqPrrlMpOZzRUJPF1abc12jXVpNx5bdXQFcED3EL1JC1QQ1ilGRgzRBAkkEDBSFPKUoWgls5BfcdYDyAAnMBJ3aAAjWdcAgMoICwWBkCoxc2l+AAhd4AM6C0ACVmjadoOMGekqzAmsIP3BAJXQuCo10R9NVOeU+AkDBIkCSRDC7UgxD4AjEyI0jyKomiUxwJjZ0XRlOnYziul4-iOiE1oRK3CZxL3DwJSVYRtASbguDkxQUMEAwMHUcRYkkdRSDiLF9NwQhfnpel2laZoWS6ABNToemaFc3JdDz3U8OYe3iHT9m9eFvVRcIHwwNUpGjAcgn9PTiSuZAIHo9McDAcp2lgZRYHwMBMkIZoAA0mXaZLGWGNKMuy3L8sKnda0ghAAFpsSiBEYmg6KJEkGIQ3UHsJFivh-QRJZuCJYkcBoCA4BYK5rHwatQRK7auwwKEKo4U7fIMaRuHlC79l8nR5l8YwEv1e4qUzGp4DEn66y4GRokSAxhXxMQ6vRLhokhBsjjPDhEaTQ1jXwU1zW+3cSqjHTomxBIJSqnZhBDUnsTh1rQsRUQaYNKlU0ZjMaTR5nNskqVmwBmNZJlTS+ZQ+Syb0QJKeCanOoTclkfR9zMa2iR0JhOEESRFEr3QmJ-ERWQsWlMQaffac5wXCB5YkrzIuiALoNhXytQkENYowSKRUEZFgmCOQJC9j8MC-H9-Yxlm6xCGSHv9YGxFhWJo-QuP9kT8Rk9gtPpwDzzEBu3hhThAc9HhBJkPCYOVQkaMU8wh7ziNscDJIsicEo6icFojB6MY5js-N3OtuCXZIiEYH1jxYLwlaxYDFi5qa8i0f0nH3JDKnmfTIwScLMgRuSsiqJNNCtVjj8Ph5QHKIjACEVLIRSD0aY32MrPWiL86w3VFFvbgcRESxhjJ2WQak1TRSlCsYwuhtRj1fHuDagdEDNg0AgpBu8Hr70QNtOIPYU6IMiDsHQsVhAvm6r1KA7R+qDWGqNcaMCtqkBDJqTQMNdD6EMJIUcQjJJ-RTmKQ6uJYJSDOihbacIohxACsORhO8DhmDMEAA */
   createMachine(
     {
-      context: { ...getLocalAppConfig() },
+      context: { appConfig, test: 1 },
       tsTypes: {} as import('./App.machine.typegen').Typegen0,
-      schema: { events: {} as Event },
+      schema: {
+        events: {} as Event,
+        context: {
+          appConfig: {} as AppConfig,
+          test: {} as number,
+        },
+      },
       id: 'app',
       initial: 'init',
       states: {
@@ -34,10 +48,34 @@ export const appMachine =
         main: {
           type: 'parallel',
           states: {
-            view: {
+            canvas: {
               initial: 'widgets',
               states: {
-                widgets: {},
+                widgets: {
+                  on: {
+                    OPEN_SETTINGS: {
+                      target: 'settings',
+                    },
+                    FLIP_PAGE: {},
+                    EDIT_WIDGETS: {
+                      target: 'editing_widgets',
+                    },
+                  },
+                },
+                settings: {
+                  on: {
+                    CLOSE_SETTINGS: {
+                      target: 'widgets',
+                    },
+                  },
+                },
+                editing_widgets: {
+                  on: {
+                    FINISH_EDITING_WIDGETS: {
+                      target: 'widgets',
+                    },
+                  },
+                },
               },
             },
             menu: {
@@ -59,23 +97,23 @@ export const appMachine =
                 },
               },
             },
-            screen_blind: {
+            screen_blinds: {
               initial: 'disabled',
               states: {
                 disabled: {
                   on: {
-                    ENABLE_SCREEN_BLIND: {
+                    ENABLE_SCREEN_BLINDS: {
                       target: 'enabled',
                     },
                   },
                 },
                 enabled: {
+                  entry: send('CLOSE_MENU'),
                   on: {
-                    DISABLE_SCREEN_BLIND: {
+                    DISABLE_SCREEN_BLINDS: {
                       target: 'disabled',
                     },
                   },
-                  entry: send('CLOSE_MENU'),
                 },
               },
             },
@@ -96,8 +134,13 @@ export const appMachine =
       },
     },
     {
+      actions: {
+        bump: assign({
+          test: context => context.test + 1,
+        }),
+      },
       guards: {
-        hasConnectedSystems: context => !!context.systems?.length,
+        hasConnectedSystems: context => !!context.appConfig?.systems?.length,
       },
     }
   );
